@@ -105,12 +105,13 @@ void updateCursorPosition(GameState &gameState)
     {
       gameState.cursorPosition = (newRow * GRID_DIMENSION) + newColumn;
 
+      gameState.cacheIsDirty[gameState.activeLayer] = true;
+
       if (gameState.gameMode == DROP)
       {
         gameState.activeLayer = getLowestUnoccupiedLayer(gameState);
+        gameState.cacheIsDirty[gameState.activeLayer] = true;
       }
-
-      gameState.cacheIsDirty[gameState.activeLayer] = true;
     }
 
     lastLeft = currentLeft;

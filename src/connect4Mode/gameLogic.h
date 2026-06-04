@@ -2,6 +2,18 @@
 #include "gameState.h"
 #include "../shared.h"
 
+uint8_t getLowestUnoccupiedLayer(const GameState &gameState)
+{
+  for (uint8_t layer = 0; layer < NUM_LAYERS; layer++)
+  {
+    if (!gameState.board[layer][gameState.cursorPosition])
+    {
+      return layer;
+    }
+  }
+  return NUM_LAYERS - 1; // if all layers full at cursor position, return top layer
+}
+
 void initializeGameState(GameState &gameState)
 {
   for (int layer = 0; layer < NUM_LAYERS; layer++)
@@ -18,9 +30,22 @@ void initializeGameState(GameState &gameState)
     gameState.cacheIsDirty[layer] = true;
   }
 
+  if (gameState.gameMode == DROP)
+  {
+    // In drop mode:
+    // Blue starts with 1 of the 8 non-corner edge spots in the bottom layer
+    // Red starts with 1 of the inverse options of blue's options
+    uint8_t blueStartOptions[8] = {1, 2, 4, 7, 8, 11, 13, 14};
+    uint8_t redStartOptions[8] = {0, 3, 5, 6, 9, 10, 12, 15};
+    uint8_t blueStart = blueStartOptions[random(0, 8)];
+    uint8_t redStart = redStartOptions[random(0, 8)];
+    gameState.board[0][blueStart] = 2;
+    gameState.board[0][redStart] = 1;
+  }
+
   // random is min inclusive, max exclusive
-  gameState.activeLayer = gameState.gameMode == LAYERS ? random(0, NUM_LAYERS) : 0;
   gameState.cursorPosition = random(0, NUM_POSITIONS);
+  gameState.activeLayer = gameState.gameMode == LAYERS ? random(0, NUM_LAYERS) : getLowestUnoccupiedLayer(gameState);
   gameState.blinkIsOn = false;
   gameState.lastBlinkMs = 0;
   // The board is wired so that red = 1
@@ -28,18 +53,6 @@ void initializeGameState(GameState &gameState)
   gameState.isPlayer1Turn = false;
   gameState.status = IN_PROGRESS;
   gameState.frozenUntilMs = 0;
-}
-
-uint8_t getLowestUnoccupiedLayer(const GameState &gameState)
-{
-  for (uint8_t layer = 0; layer < NUM_LAYERS; layer++)
-  {
-    if (!gameState.board[layer][gameState.cursorPosition])
-    {
-      return layer;
-    }
-  }
-  return NUM_LAYERS - 1; // if all layers full at cursor position, return top layer
 }
 
 void updateCursorPosition(GameState &gameState)

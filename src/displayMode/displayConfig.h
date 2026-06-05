@@ -4,9 +4,10 @@
 
 enum StartMode
 {
-  ALL_RANDOM,   // random seeding for all spots
-  TOP_LEFT,     // top left is random color, all others off
-  SINGLE_RANDOM // single spot is random color, all others off
+  ALL_RANDOM,    // random seeding for all spots
+  TOP_LEFT,      // top left is random color, all others off
+  SINGLE_RANDOM, // single spot is random color, all others off
+  MID_EDGE       // single spot on one of the non-corner edges in the top or bottom layer is random color, all others off
 };
 
 struct DisplayConfig

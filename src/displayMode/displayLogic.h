@@ -90,6 +90,17 @@ void initializeDisplay()
     displayState.cube[randomLayer][randomPosition] = random(config.startMin, config.startMax + 1);
   }
 
+  // single spot on one of the non-corner edges in the top or bottom layer is random color, all others off
+  if (config.startMode == MID_EDGE)
+  {
+    uint8_t positionOptions[8] = {1, 2, 4, 7, 8, 11, 13, 14};
+    uint8_t layerOptions[2] = {0, NUM_LAYERS - 1};
+    uint8_t startPosition = positionOptions[random(0, 8)];
+    uint8_t startlayer = layerOptions[random(0, 2)];
+
+    displayState.cube[startlayer][startPosition] = random(config.startMin, config.startMax + 1);
+  }
+
   for (int layer = 0; layer < NUM_LAYERS; layer++)
   {
     // clear the cached bytes

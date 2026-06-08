@@ -5,23 +5,23 @@ This repo holds code for several 3D game of life displays and two 3D connect-4 g
 ## Output
 
 There are two modes: `DISPLAY` and `GAME`.
-Pressing `set` cycles between modes.
+Pressing the `set` button cycles between modes.
 
 ### `DISPLAY` mode
 
-The cube cycles through the game of life rules.
-Pressing `reset` while in display mode cycles to the next set of game of life rules.
+The cube cycles through the game of life rules every `DISPlAY_TIME_MS` milliseconds.
+Pressing the `reset` button while in display mode jumps to the next set of rules.
 
 To add a new set of rules:
 
-- Define the display in a `src/displays/*.h` file.
+1. Define the display in a `src/displays/*.h` file.
   Use `src/displays/template.h` as a reference.
-- Add the display to `src/displays.h`
+1. Add the display to `src/displays.h`.
 
 ### `GAME` mode
 
 There are two game modes: `DROP` and `LAYER`.
-Pressing `reset` while in game mode cycles between the game modes.
+Pressing the `reset` button while in game mode cycles between the game modes.
 
 #### `DROP` game mode
 
